@@ -29,7 +29,7 @@ TARGET_BOARD_INFO_FILE ?= device/samsung/superiorcmcc/board-info.txt
 
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_BASE := 0x80000000
-BOARD_KERNEL_CMDLINE := console=ttyO2,115200n8 mem=1024M androidboot.console=ttyO2 vram=20M omapfb.vram=0:16M androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := console=ttyO2,115200n8 mem=1024M androidboot.console=ttyO2 vram=20M omapfb.vram=0:16M
 
 # Inline kernel building
 TARGET_KERNEL_SOURCE := kernel/samsung/piranha
@@ -56,9 +56,6 @@ BOARD_HARDWARE_CLASS := device/samsung/superiorcmcc/cmhw
 # Egl
 BOARD_EGL_CFG := device/samsung/superiorcmcc/configs/egl.cfg
 USE_OPENGL_RENDERER := true
-
-# Force the screenshot path to CPU consumer
-COMMON_GLOBAL_CFLAGS += -DFORCE_SCREENSHOT_CPU_PATH
 
 # Camera
 BOARD_CAMERA_HAVE_ISO := true
@@ -120,12 +117,6 @@ BOARD_SEPOLICY_UNION += \
     ueventd.te \
     vold.te \
     wpa_supplicant.te
-
-# Override healthd HAL
-BOARD_HAL_STATIC_LIBRARIES := libhealthd.piranha
-
-# Needed for blobs
-COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
 
 # Recovery
 TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"

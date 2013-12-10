@@ -43,8 +43,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/silence.wav:system/etc/sound/silence.wav
 
 # Bluetooth configuration files
-#PRODUCT_COPY_FILES += \
-#    system/bluetooth/data/main.le.conf:system/etc/bluetooth/main.conf
+PRODUCT_COPY_FILES += \
+    system/bluetooth/data/main.le.conf:system/etc/bluetooth/main.conf
 
 # GPS
 PRODUCT_COPY_FILES += \
@@ -145,9 +145,7 @@ PRODUCT_COPY_FILES += \
     packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:system/etc/permissions/android.software.live_wallpaper.xml
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.opengles.version=131072 \
-    ro.zygote.disable_gl_preload=1 \
-    ro.bq.gpu_to_cpu_unsupported=1
+    ro.opengles.version=131072
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sf.lcd_density=320
