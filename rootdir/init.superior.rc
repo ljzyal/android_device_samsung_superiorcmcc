@@ -28,6 +28,9 @@ on init
     export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
     export EMULATED_STORAGE_TARGET /storage/emulated
 
+    # Preload libjhead for camera
+    export LD_PRELOAD /system/lib/libjhead.so
+
     # for backwards compatibility
     symlink /storage/emulated/legacy /sdcard
     symlink /storage/emulated/legacy /mnt/sdcard
@@ -635,6 +638,7 @@ service fRom /system/bin/fRom \
     user media
     group media
     class late_start
+    seclabel u:r:fRom:s0
     oneshot
 
 # AT Distributor for factory test
@@ -649,10 +653,11 @@ service bt_dut_cmd /system/bin/bcm_dut
     disabled
     oneshot
 
-service pvrsrvinit /vendor/bin/pvrsrvinit
+service pvrsrvinit /system/bin/pvrsrvinit
     class core
     user root
     group root
+    seclabel u:r:pvrsrvinit:s0
     oneshot
     disabled
 
@@ -660,6 +665,7 @@ service pvrsrvctl /vendor/bin/pvrsrvctl_SGX544_112 --start --no-module
     class core
     user root
     group root
+    seclabel u:r:pvrsrvinit:s0
     oneshot
     disabled
 
@@ -668,11 +674,13 @@ service orientationd /system/bin/orientationd
     class main
     user compass
     group input
+    seclabel u:r:orientationd:s0
 
 service geomagneticd /system/bin/geomagneticd
     class main
     user compass
     group system input
+    seclabel u:r:geomagneticd:s0
 
 service p2p_supplicant /system/bin/wpa_supplicant \
         -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -N \
@@ -798,13 +806,14 @@ service gpsd /system/bin/gpsd -c /system/etc/gps.xml
     socket gps seqpacket 0660 gps system
     user gps
     group system inet sdcard_rw
+    u:object_r:gpsd:s0
     ioprio be 0
 
 # TVout
-service TvoutService_C /system/bin/bintvoutservice
-    class main
-    user system
-    group graphics
+#service TvoutService_C /system/bin/bintvoutservice
+#    class main
+#    user system
+#    group graphics
 
 # SISO-ANDR-PERF :: START Changing governor to interactive and secheduler to cfq after boot complete
 on property:sys.boot_completed=1
@@ -882,6 +891,7 @@ service smc_pa /system/bin/smc_pa_ctrl \
     class core
     user root
     group root
+    seclabel u:r:smc_pa:s0
     oneshot
 
 # Workaround for broken incall audio
@@ -891,3 +901,25 @@ service bootsnd /system/bin/tinyplay /system/etc/sound/silence.wav -D 0 -d 0 -p 
     group audio
     oneshot
 
+# CyanogenMod Performance Profiles
+# CPU Frequency Governor
+on property:sys.boot_completed=1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor	interactive
+    write /sys/block/mmcblk0/queue/scheduler cfq
+
+# Powersave
+on property:sys.perf.profile=0
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor powersave
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor powersave
+
+# Balanced
+on property:sys.perf.profile=1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
+
+# Performance
+on property:sys.perf.profile=2
+    write /sys/devices/system/cpu/cpu0/online 1
+    write /sys/devices/system/cpu/cpu1/online 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor performance
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor performance

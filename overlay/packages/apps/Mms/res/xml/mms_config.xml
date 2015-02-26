@@ -45,6 +45,6 @@
     <bool name="enableSplitSMS">false</bool>
 
     <!-- UAProf URL -->
-    <string name="uaProfUrl">http://wap.samsungmobile.com/uaprof/GT-I9268.xml</string>
+    <string name="uaProfUrl">http://wap.samsungmobile.com/uaprof/GT-I9260.xml</string>
 
 </mms_config>

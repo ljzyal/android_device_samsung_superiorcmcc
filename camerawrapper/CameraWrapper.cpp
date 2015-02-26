@@ -85,7 +85,7 @@ static int check_vendor_module()
     if(gVendorModule)
         return 0;
 
-    rv = hw_get_module("vendor-camera", (const hw_module_t **)&gVendorModule);
+    rv = hw_get_module_by_class("camera", "vendor", (const hw_module_t **)&gVendorModule);
     if (rv)
         ALOGE("failed to open vendor camera module");
     return rv;
@@ -113,6 +113,7 @@ static char * camera_fixup_getparams(int id, const char * settings)
 
 char * camera_fixup_setparams(int id, const char * settings)
 {
+    bool isVideo = false;
     const char* isoMode;
 
     android::CameraParameters params;
@@ -133,6 +134,13 @@ char * camera_fixup_setparams(int id, const char * settings)
         else if(strcmp(isoMode, "ISO800") == 0)
             params.set(android::CameraParameters::KEY_ISO_MODE, "800");
     }
+
+    if (params.get(android::CameraParameters::KEY_RECORDING_HINT)) {
+        isVideo = !strcmp(params.get(android::CameraParameters::KEY_RECORDING_HINT), "true");
+    }
+
+    // Enable Samsung camcorder mode
+    params.set("cam_mode", isVideo ? "1" : "0");
 
     android::String8 strParams = params.flatten();
     char *ret = strdup(strParams.string());
