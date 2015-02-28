@@ -13,7 +13,6 @@ system/bin/mfgloader
 system/bin/wlandutservice
 system/bin/gpsd
 system/bin/gps.cer
-system/bin/rild
 system/cameradata/datapattern_420sp.yuv
 system/cameradata/datapattern_front_420sp.yuv
 system/etc/wifi/bcmdhd_apsta.bin_b2
@@ -33,6 +32,7 @@ system/lib/hw/sensors.omap4.so
 system/lib/libexif.so
 system/lib/libexifa.so
 system/lib/libjpega.so
+system/lib/libmedia_jni.so
 system/lib/libmedia_native.so
 system/lib/libsecjpeginterface.so
 system/lib/libseccameracore.so
@@ -48,8 +48,6 @@ system/lib/libdmcFaceEngine3GVT.so
 system/lib/libsecface.so
 system/lib/libskib.so
 #camera end
-system/lib/libaudio-ril.so
-system/lib/libril.so
 system/lib/libreference-ril.so
 system/lib/libti_chroma_nf_lib.so
 system/lib/libI420colorconvert.so
