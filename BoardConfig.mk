@@ -29,7 +29,7 @@ TARGET_BOARD_INFO_FILE := device/samsung/superiorcmcc/board-info.txt
 
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_BASE := 0x80000000
-BOARD_KERNEL_CMDLINE := console=ttyO2,115200n8 mem=1024M androidboot.console=ttyO2 vram=20M omapfb.vram=0:16M androidboot.selinux=permissive selinux=0
+BOARD_KERNEL_CMDLINE := console=ttyO2,115200n8 mem=1024M androidboot.console=ttyO2 vram=20M omapfb.vram=0:16M
 
 # Inline kernel building
 TARGET_KERNEL_SOURCE := kernel/samsung/piranha
